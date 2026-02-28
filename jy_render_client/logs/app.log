@@ -1,0 +1,5 @@
+2026-02-28 10:43:12,832 [INFO] MainThread - Task poller started.
+2026-02-28 10:43:42,768 [INFO] MainThread - Testing connection to http://127.0.0.1:8000
+2026-02-28 10:43:42,782 [INFO] MainThread - Connection ok: {'status': 'ok', 'message': 'capcut_render_server is running'}
+2026-02-28 10:47:36,025 [INFO] MainThread - Closing app...
+2026-02-28 10:47:36,025 [INFO] MainThread - Task poller stopped.

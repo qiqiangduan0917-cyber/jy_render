@@ -1,0 +1,9 @@
+{
+  "base_url": "http://127.0.0.1:8000",
+  "api_key": "",
+  "jobs_endpoint": "/api/v1/jobs",
+  "health_endpoint": "/",
+  "poll_interval_seconds": 3,
+  "connect_timeout": 8.0,
+  "read_timeout": 300.0
+}

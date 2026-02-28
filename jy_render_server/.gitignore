@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.pyo
+.idea/
+.license
+data/
+python-3.13.12-embed-amd64/
+logs/
