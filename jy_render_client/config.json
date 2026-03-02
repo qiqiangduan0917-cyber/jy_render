@@ -1,0 +1,22 @@
+{
+  "active_env": "dev",
+  "environments": {
+    "dev": {
+      "base_url": "http://127.0.0.1:8000",
+      "api_key": "",
+      "jobs_endpoint": "/api/v1/jobs",
+      "health_endpoint": "/",
+      "connect_timeout": 8.0,
+      "read_timeout": 300.0
+    },
+    "prod": {
+      "base_url": "http://152.136.35.189:18000",
+      "api_key": "",
+      "jobs_endpoint": "/api/v1/jobs",
+      "health_endpoint": "/",
+      "connect_timeout": 8.0,
+      "read_timeout": 300.0
+    }
+  },
+  "poll_interval_seconds": 3
+}

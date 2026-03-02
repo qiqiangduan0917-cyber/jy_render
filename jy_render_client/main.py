@@ -9,15 +9,20 @@ from app.utils.logger import configure_logging
 
 
 def main() -> int:
-    app_data_dir = Path(__file__).resolve().parent / "runtime"
+    app_root_dir = Path(__file__).resolve().parent
+    app_data_dir = app_root_dir / "runtime"
     app_data_dir.mkdir(parents=True, exist_ok=True)
     logger = configure_logging(app_data_dir)
 
     app = QApplication(sys.argv)
-    icon_path = Path(__file__).resolve().parent / "assets" / "logo.ico"
+    icon_path = app_root_dir / "assets" / "logo.ico"
     if icon_path.exists():
         app.setWindowIcon(QIcon(str(icon_path)))
-    window = MainWindow(root_dir=app_data_dir, logger=logger)
+    window = MainWindow(
+        root_dir=app_data_dir,
+        logger=logger,
+        config_path=app_root_dir / "config.json",
+    )
     window.show()
     return app.exec()
 

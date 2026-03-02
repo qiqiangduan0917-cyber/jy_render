@@ -1,6 +1,7 @@
 import time
 import random
 import logging
+import ctypes
 
 import pyautogui
 from PIL import Image
@@ -11,6 +12,9 @@ OFFSET_RANGE = 5
 
 logger = logging.getLogger(__name__)
 
+CF_UNICODETEXT = 13
+GMEM_MOVEABLE = 0x0002
+
 
 def _rand_offset(x, y):
     dx = random.randint(-OFFSET_RANGE, OFFSET_RANGE)
@@ -20,6 +24,36 @@ def _rand_offset(x, y):
 
 def _stopped(stop_event):
     return stop_event is not None and stop_event.is_set()
+
+
+def _copy_text_to_clipboard(text: str) -> bool:
+    user32 = ctypes.windll.user32
+    kernel32 = ctypes.windll.kernel32
+
+    if not user32.OpenClipboard(None):
+        return False
+    try:
+        if not user32.EmptyClipboard():
+            return False
+        data = ctypes.create_unicode_buffer(text)
+        size = ctypes.sizeof(data)
+        h_global = kernel32.GlobalAlloc(GMEM_MOVEABLE, size)
+        if not h_global:
+            return False
+        ptr = kernel32.GlobalLock(h_global)
+        if not ptr:
+            kernel32.GlobalFree(h_global)
+            return False
+        try:
+            ctypes.memmove(ptr, ctypes.addressof(data), size)
+        finally:
+            kernel32.GlobalUnlock(h_global)
+        if not user32.SetClipboardData(CF_UNICODETEXT, h_global):
+            kernel32.GlobalFree(h_global)
+            return False
+        return True
+    finally:
+        user32.CloseClipboard()
 
 
 def click_template(template_path: str, confidence: float = 0.8,
@@ -167,7 +201,13 @@ def export_one(name: str, cfg, stop_event=None) -> bool:
 
 
 def _type_text(text: str) -> bool:
-    pyautogui.typewrite(text, interval=0.05)
+    pyautogui.hotkey("ctrl", "a")
+    pyautogui.press("backspace")
+    if _copy_text_to_clipboard(text):
+        pyautogui.hotkey("ctrl", "v")
+    else:
+        logger.warning("  [clipboard] failed, fallback to typewrite")
+        pyautogui.typewrite(text, interval=0.05)
     return True
 
 
@@ -176,6 +216,5 @@ def _click_pos(x: int, y: int) -> bool:
     pyautogui.moveTo(x, y, duration=0.3)
     pyautogui.click()
     return True
-
 
 

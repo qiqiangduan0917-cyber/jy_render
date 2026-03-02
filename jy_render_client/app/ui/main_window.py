@@ -40,14 +40,20 @@ from app.utils.logger import attach_ui_logger
 class MainWindow(QMainWindow):
     ui_log_signal = Signal(str)
 
-    def __init__(self, root_dir: Path, logger: logging.Logger, parent=None):
+    def __init__(
+        self,
+        root_dir: Path,
+        logger: logging.Logger,
+        config_path: Path | None = None,
+        parent=None,
+    ):
         super().__init__(parent)
         self.root_dir = root_dir
         self.logger = logger
         self.setWindowTitle("剪映云渲染助手")
         self.resize(1320, 900)
 
-        self.config_store = ConfigStore(self.root_dir / "config.json")
+        self.config_store = ConfigStore(config_path or (self.root_dir / "config.json"))
         self.api_config = self.config_store.load()
         self.poll_interval_seconds = self.config_store.load_poll_interval_seconds()
         self.store = TaskStore(self.root_dir / "tasks.json")
