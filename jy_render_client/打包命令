@@ -1,0 +1,1 @@
+pyinstaller --noconfirm --clean --windowed --name JYRenderClient --icon assets\logo.ico  --add-data "assets;assets"  --add-data "runtime\config.json;runtime" main.py

@@ -527,12 +527,40 @@ class MainWindow(QMainWindow):
         task = self._find_task(task_id)
         if not task:
             return
+        if self.upload_worker and self.upload_worker.isRunning():
+            self._show_error("当前已有上传任务在进行中。")
+            return
+        cfg = self._current_config()
+        if not cfg.base_url:
+            self._show_error("请先配置有效的服务端 Base URL。")
+            return
         if not task.draft_path or not Path(task.draft_path).exists():
             self._show_error("重试所需的草稿目录不存在。")
             return
-        self.selected_draft_path = task.draft_path
-        self.draft_path_edit.setText(task.draft_path)
-        self.on_start_upload_render()
+
+        # Retry only this task's draft path; do not replace selected draft root.
+        task.status = "UPLOADING"
+        task.progress = "0%"
+        task.error = None
+        task.updated_at = now_iso()
+        self._save_tasks()
+        self._render_table()
+
+        self.pending_upload_items = []
+        self.batch_upload_total = 1
+        self.batch_upload_done = 0
+        self.batch_upload_failed = 0
+        self.active_upload_task_id = task.task_id
+        self.upload_progress.setValue(0)
+        self.upload_status_label.setText(f"1/1 {task.title}")
+        self.btn_start.setEnabled(False)
+
+        self.upload_worker = UploadRenderWorker(cfg, task.draft_path, task.title, self)
+        self.upload_worker.progress_changed.connect(self._on_upload_progress)
+        self.upload_worker.log.connect(self.logger.info)
+        self.upload_worker.finished_ok.connect(self._on_upload_render_finished)
+        self.upload_worker.failed.connect(self._on_upload_render_failed)
+        self.upload_worker.start()
 
     def _find_task(self, task_id: str) -> Task | None:
         for task in self.tasks:

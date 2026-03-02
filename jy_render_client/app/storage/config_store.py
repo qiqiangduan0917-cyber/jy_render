@@ -62,10 +62,6 @@ class ConfigStore:
             "poll_interval_seconds": 3,
         }
         if not self.store_path.exists():
-            self.store_path.write_text(
-                json.dumps(defaults, ensure_ascii=False, indent=2),
-                encoding="utf-8",
-            )
             return defaults
         try:
             raw = json.loads(self.store_path.read_text(encoding="utf-8"))

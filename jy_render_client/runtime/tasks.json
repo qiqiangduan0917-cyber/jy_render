@@ -1,0 +1,50 @@
+[
+  {
+    "task_id": "20260302-115213-082724",
+    "title": "8dd06ecc-dab1-46f1-b60f-f265036dc12c - 副本 (2)",
+    "status": "DONE",
+    "draft_id": null,
+    "progress": "-",
+    "created_at": "2026-03-02T11:50:12",
+    "updated_at": "2026-03-02T11:52:50",
+    "output_url": "/api/v1/jobs/20260302-115213-082724/download",
+    "output_path": null,
+    "error": null,
+    "canceled_local": false,
+    "draft_path": "C:\\Users\\Administrator\\Desktop\\aaaa\\8dd06ecc-dab1-46f1-b60f-f265036dc12c - 副本 (2)",
+    "assets_mode": null,
+    "assets": []
+  },
+  {
+    "task_id": "20260302-115325-1a670e",
+    "title": "8dd06ecc-dab1-46f1-b60f-f265036dc12c - 副本",
+    "status": "RENDERING",
+    "draft_id": null,
+    "progress": "-",
+    "created_at": "2026-03-02T11:50:12",
+    "updated_at": "2026-03-02T11:53:30",
+    "output_url": null,
+    "output_path": null,
+    "error": null,
+    "canceled_local": false,
+    "draft_path": "C:\\Users\\Administrator\\Desktop\\aaaa\\8dd06ecc-dab1-46f1-b60f-f265036dc12c - 副本",
+    "assets_mode": null,
+    "assets": []
+  },
+  {
+    "task_id": "20260302-115054-26a716",
+    "title": "8dd06ecc-dab1-46f1-b60f-f265036dc12c",
+    "status": "DONE",
+    "draft_id": null,
+    "progress": "-",
+    "created_at": "2026-03-02T11:50:12",
+    "updated_at": "2026-03-02T11:52:36",
+    "output_url": "/api/v1/jobs/20260302-115054-26a716/download",
+    "output_path": "C:\\Users\\Administrator\\Desktop\\bbb\\8dd06ecc-dab1-46f1-b60f-f265036dc12c.mp4",
+    "error": null,
+    "canceled_local": false,
+    "draft_path": "C:\\Users\\Administrator\\Desktop\\aaaa\\8dd06ecc-dab1-46f1-b60f-f265036dc12c",
+    "assets_mode": null,
+    "assets": []
+  }
+]

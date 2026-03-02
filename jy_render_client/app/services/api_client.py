@@ -37,6 +37,8 @@ class ApiClient:
     def __init__(self, config: ApiConfig):
         self.config = config.normalize()
         self.session = requests.Session()
+        # Force direct connections; ignore system/environment proxy settings.
+        self.session.trust_env = False
         retry = Retry(
             total=2,
             connect=2,
@@ -44,7 +46,8 @@ class ApiClient:
             status=2,
             backoff_factor=0.5,
             status_forcelist=[429, 500, 502, 503, 504],
-            allowed_methods=frozenset(["GET", "POST"]),
+            # Avoid retrying upload POST requests with file bodies.
+            allowed_methods=frozenset(["GET"]),
             raise_on_status=False,
         )
         adapter = HTTPAdapter(max_retries=retry)
@@ -129,10 +132,10 @@ class ApiClient:
         fp = None
         try:
             fp = zip_path.open("rb")
+            start_t = time.perf_counter()
             encoder = MultipartEncoder(
                 fields=[("draft", (f"{draft_dir.name}.zip", fp, "application/zip"))]
             )
-            start_t = time.perf_counter()
 
             def _cb(monitor: MultipartEncoderMonitor) -> None:
                 elapsed = max(time.perf_counter() - start_t, 0.001)

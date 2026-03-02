@@ -1,5 +1,4 @@
 import sys
-import os
 from pathlib import Path
 
 from PySide6.QtGui import QIcon
@@ -10,7 +9,7 @@ from app.utils.logger import configure_logging
 
 
 def main() -> int:
-    app_data_dir = Path(os.getenv("APPDATA") or str(Path.home() / "AppData" / "Roaming")) / "JYRenderClient"
+    app_data_dir = Path(__file__).resolve().parent / "runtime"
     app_data_dir.mkdir(parents=True, exist_ok=True)
     logger = configure_logging(app_data_dir)
 
